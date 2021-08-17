@@ -1,0 +1,31 @@
+---
+- name: KeepalivedAndHAPlaybook
+  hosts: haproxyhosts
+  become: true
+  remote_user: root
+  gather_facts: true
+  vars_files:
+    - ./vars/main.yml
+  roles:
+    - role: base
+    - role: add_users
+    - role: sysctl
+    - role: docker
+    - role: keepalived
+    - role: docker-haproxy
+#  environment: "{{ proxy_env }}"
+
+- name: AppPlaybook
+  hosts: apphosts
+  become: true
+  remote_user: root
+  gather_facts: true
+  vars_files:
+    - ./vars/app.yml
+  roles:
+    - role: base
+    - role: add_users
+    - role: sysctl
+    - role: docker
+    - role: kuard
+#  environment: "{{ proxy_env }}"

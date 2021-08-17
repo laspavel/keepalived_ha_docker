@@ -1,0 +1,52 @@
+- name: firewall - open ports 
+  firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: enabled
+    immediate: yes
+  loop: "{{ haproxy_ports }}"
+
+- name: Get the user's home directory
+  shell: >
+    egrep "^{{ haproxy_user }}:" /etc/passwd | awk -F: '{ print $6 }'
+  changed_when: false
+  register: user_home
+
+- name: Creates directory
+  file:
+    path: "{{ user_home.stdout }}/haproxy/"
+    state: directory
+    owner: "{{ haproxy_user }}"
+    group: "{{ haproxy_user }}"
+    mode: '0755'
+  become: yes
+  become_user: "{{ haproxy_user }}"
+
+- name: Copy docker-compose.yml
+  template:
+    src: 'docker-compose.yml.j2'
+    dest: "{{ user_home.stdout }}/haproxy/docker-compose.yml"
+    owner: "{{ haproxy_user }}"
+    group: "{{ haproxy_user }}"
+    mode: '0755'
+  become: yes
+  become_user: "{{ haproxy_user }}"
+  ignore_errors: true
+
+- name: Copy haproxy.cfg
+  copy:
+    src: 'haproxy.cfg'
+    dest: "{{ user_home.stdout }}/haproxy/haproxy.cfg"
+    owner: "{{ haproxy_user }}"
+    group: "{{ haproxy_user }}"
+    mode: '0755'
+  become: yes
+  become_user: "{{ haproxy_user }}"
+  ignore_errors: true
+
+- name: Start Haproxy container
+  command: "{{ docker_compose_path }} -f {{ user_home.stdout }}/haproxy/docker-compose.yml up -d"
+  become: yes
+  become_user: "{{ haproxy_user }}"
+  ignore_errors: true
+

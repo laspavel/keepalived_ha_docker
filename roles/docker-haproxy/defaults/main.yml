@@ -1,0 +1,5 @@
+docker_compose_path: /usr/local/bin/docker-compose
+haproxy_user: root
+haproxy_ports:
+  - 80
+

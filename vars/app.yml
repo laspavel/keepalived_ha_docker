@@ -1,0 +1,6 @@
+new_users:
+    - kuard
+docker_users:
+    - kuard
+kuard_user: kuard
+kuard_port: 80

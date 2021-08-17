@@ -1,0 +1,3 @@
+docker_compose_path: /usr/local/bin/docker-compose
+kuard_user: root
+kuard_port: 8080

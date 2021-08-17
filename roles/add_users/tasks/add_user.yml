@@ -1,0 +1,31 @@
+---
+
+# Add new user
+- name: Add new users
+  user:
+    name: "{{ item }}"
+    comment: User account
+    shell: /bin/bash
+    system: no
+    createhome: yes
+    home: "/home/{{ item }}"
+    state: present
+  with_items: "{{ new_users }}"
+
+
+- name: Creates destination .ssh directory
+  file:
+    state: directory
+    owner: "{{ item }}"
+    mode: 0700
+    dest: /home/{{ item }}/.ssh/
+  with_items: "{{ new_users }}"
+
+- name: Pushes rsa key to user home directory
+  copy:
+    src: id_rsa.pub
+    dest: "/home/{{ item }}/.ssh/authorized_keys"
+    owner: "{{ item }}"
+    mode: 0600
+  with_items: "{{ new_users }}"
+  ignore_errors: true

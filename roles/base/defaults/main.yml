@@ -1,0 +1,20 @@
+---
+base_required_packages:
+  - mc
+  - nano
+  - htop
+  - atop
+  - iotop
+  - net-tools
+  - git
+  - tig
+  - curl
+  - wget
+  - yum-utils
+  - mlocate
+  - firewalld
+  - python3-pip
+
+selinux_status: permissive   # disabled or permissive
+timezone: Europe/Kiev
+

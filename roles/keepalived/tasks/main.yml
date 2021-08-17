@@ -1,0 +1,25 @@
+- name: firewall - open vrrp protobash 
+  firewalld:
+    rich_rule: 'rule protocol value="vrrp" accept'
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: install soft
+  yum:
+    name: "keepalived"
+    update_cache: yes
+
+- name: Template configuration file to keepalived.conf
+  template:
+    src: keepalived.conf.j2
+    dest: '/etc/keepalived/keepalived.conf'
+  notify:
+    - restart keepalived.service
+
+- name: enable and start keepalived.service
+  systemd:
+    name: keepalived
+    state: started
+    enabled: yes
+

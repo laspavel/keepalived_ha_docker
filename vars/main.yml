@@ -1,0 +1,6 @@
+new_users:
+    - centos
+docker_users:
+    - centos
+haproxy_user: centos
+
