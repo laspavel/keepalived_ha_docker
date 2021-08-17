@@ -4,3 +4,7 @@ docker_users:
     - centos
 haproxy_user: centos
 
+test_command: "docker container ls | grep haproxy_haproxy_1"
+keepalive_interface: enp0s3
+virtual_ip: 192.168.88.100
+
