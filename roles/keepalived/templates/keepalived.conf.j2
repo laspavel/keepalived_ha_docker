@@ -4,7 +4,7 @@ global_defs{
 }
 
 vrrp_script check_command {
-   script      {{ test_command }}
+   script "{{ test_command }}"
    timeout 5
    rise 3
    fall 3
